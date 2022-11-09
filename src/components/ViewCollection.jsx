@@ -291,7 +291,7 @@ function ViewCollection(props) {
             <div style={styles.NFTs}>
                 <Skeleton loading={!NFTs?.result}>
                     {NFTs?.result &&
-                        NFTs.result.slice((pageNumber - 1) * 20, ((pageNumber - 1) * 20) + 20).map((nft, index) => {
+                        NFTs?.result.slice((pageNumber - 1) * 20, ((pageNumber - 1) * 20) + 20).map((nft, index) => {
                           
                             return (
 
@@ -333,20 +333,20 @@ function ViewCollection(props) {
                                             style={{ height: "300px" }}
                                         />
                                     }
-                                    key={nft.token_id}
+                                    key={nft?.token_id}
                                 >
-                                    <Meta title={nft.name} description={`#${nft.token_id}`} />
+                                    <Meta title={nft?.name} description={`#${nft?.token_id}`} />
                                     {
-                                        nft.price!=="0"&&!nft.isCanceled &&!nft.isSold&&
+                                        nft?.price!=="0"&&!nft?.isCanceled &&!nft?.isSold&&
                                         <Badge.Ribbon
-                                            text={`${nft.price / ("1e" + 18)} BUSD`}
+                                            text={`${nft?.price / ("1e" + 18)} BUSD`}
                                             color='green'
                                         />
                                     } 
                                     
-                                    {parseFloat(nft.price)===0  && <Badge.Ribbon text={'Not Avaliable'} color='gray' />}
+                                    {parseFloat(nft?.price)===0  && <Badge.Ribbon text={'Not Avaliable'} color='gray' />}
 
-                                                                       {parseFloat(nft.price)===0  && <Badge.Ribbon text={'Not Avaliable'} color='gray' />}
+                                                                       {parseFloat(nft?.price)===0  && <Badge.Ribbon text={'Not Avaliable'} color='gray' />}
 
                                   </Card>
 
