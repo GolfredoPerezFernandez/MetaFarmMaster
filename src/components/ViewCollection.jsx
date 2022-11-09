@@ -315,9 +315,9 @@ function ViewCollection(props) {
                                        
                                      <Tooltip title={nft?.owner.toString().toLowerCase()===account.toLowerCase().toLowerCase()?"Remove NFT":"Buy NFT"}>
                                             {nft?.owner.toString().toLowerCase()===account.toLowerCase().toLowerCase()?
-                                            parseFloat(nft.price)===0  ?null:<CloseCircleOutlined
+                                            parseFloat(nft?.price)===0  ?null:<CloseCircleOutlined
                                                 onClick={() => removeNFT(nft)}
-                                            />:parseFloat(nft.price)===0 ?null:<ShoppingCartOutlined
+                                            />:parseFloat(nft?.price)===0 ?null:<ShoppingCartOutlined
                                                 onClick={() => buyNFT(nft)}
                                             />}
                                         </Tooltip>,
