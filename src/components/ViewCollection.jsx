@@ -263,8 +263,11 @@ function ViewCollection(props) {
     }
 
     useEffect(() => {
+      if(account){
+
         getContractNFTs(process.env.REACT_APP_CHAIN_ID);
-    }, [chainId]);
+      }
+    }, [chainId,account]);
 
     useEffect(() => {
         topOfPage.current.scrollIntoView({behavior: 'smooth'});

@@ -216,7 +216,7 @@ console.log(id)
                     <img src={NFT?.image} alt={id} style={{ width: '50%' }} />
                     {NFT?.price!==0 ?
                         <Badge.Ribbon
-                            text={(NFT?.price / ("1e" + 18)) + ' ' + nativeName}
+                            text={(NFT?.price / ("1e" + 18)) + ' ' + "BUSD"}
                             color={NFT?.isSold ? 'gray' : 'green'}
                             placement='end'
                         /> :
