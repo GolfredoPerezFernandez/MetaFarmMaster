@@ -108,6 +108,8 @@ function ViewCollection(props) {
         let startIndex = (pageNumber - 1) * 20;
         let endIndex = startIndex + 20;
         //
+        console.log("startIndex "+startIndex)
+        console.log("endIndex "+endIndex)
         let result = NFTs;
         for (let i = 0; i < NFTs.length; i++) {
             if (i >= startIndex && i <= endIndex) {
@@ -312,7 +314,7 @@ function ViewCollection(props) {
                                         // <Tooltip title="Transfer NFT">
                                         //   <SendOutlined onClick={() => handleTransferClick(nft)} />
                                         // </Tooltip>,
-                                       
+                                       nft?.owner&&
                                      <Tooltip title={nft?.owner.toString().toLowerCase()===account.toLowerCase().toLowerCase()?"Remove NFT":"Buy NFT"}>
                                             {nft?.owner.toString().toLowerCase()===account.toLowerCase().toLowerCase()?
                                             parseFloat(nft?.price)===0  ?null:<CloseCircleOutlined

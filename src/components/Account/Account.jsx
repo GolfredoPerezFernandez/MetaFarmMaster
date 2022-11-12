@@ -46,38 +46,170 @@ const styles = {
 };
 
 function Account() {
-  const { authenticate, isAuthenticated, enableWeb3,account, chainId, logout } = useMoralis();
+  const { authenticate, isAuthenticated, account, chainId, logout } = useMoralis();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAuthModalVisible, setIsAuthModalVisible] = useState(false);
 
+  async function addNetwork() {
+    let ethereum = window.ethereum;
+    try {
+      await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: process.env.REACT_APP_CHAIN_ID }],
+      });
+    } catch (error) {
+      try {
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: process.env.REACT_APP_CHAIN_ID, // Hexadecimal version of 80001, prefixed with 0x
+            chainName: process.env.REACT_APP_CHAIN_NAME,
+            nativeCurrency: {
+              name: process.env.REACT_APP_NATIVE_CURRENCY_NAME,
+              symbol: process.env.REACT_APP_NATIVE_CURRENCY_SYMBOL,
+              decimals: Number(process.env.REACT_APP_NATIVE_CURRENCY_DECIMAL),
+            },
+            rpcUrls: [process.env.REACT_APP_RPC_URL],
+            blockExplorerUrls: [process.env.REACT_APP_BLOCK_EXPLORER],
+            iconUrls: [""],
+          }],
+        });
+        alert("Network added please try switching network again");
+      } catch (addError) {
+        console.log('did not add network', addError)
+      }
+    }
+  }
 
   console.log(chainId, process.env.REACT_APP_CHAIN_ID)
 
-  if (!isAuthenticated ) {
+  if (!isAuthenticated || !account || chainId !== process.env.REACT_APP_CHAIN_ID) {
     return (
       <>
         <div>
-          <Button style={styles.text}  onClick={async () => {
+          <p style={styles.text}>Authenticate</p>
+        </div>
+        <Modal
+          visible={!isAuthenticated || !account || chainId !== process.env.REACT_APP_CHAIN_ID}
+          footer={null}
+          bodyStyle={{
+            padding: "15px",
+            fontSize: "17px",
+            fontWeight: "500",
+          }}
+          style={{ fontSize: "16px", fontWeight: "500" }}
+          width="340px"
+        >
+          <div style={{ padding: "10px", display: "flex", justifyContent: "center", fontWeight: "700", fontSize: "20px", color: 'black' }}>
+            Connect Wallet
+          </div>
+          {!isAuthenticated || !account ?
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+              {connectors.map(({ title, icon, connectorId }, key) => (
+                <div
+                  style={styles.connector}
+                  key={key}
+                  onClick={async () => {
                     try {
                       console.log('initiate login');
-                      await authenticate();
-                      console.log(isAuthenticated)
-                   
+                      await authenticate({ provider: connectorId });
+                      window.localStorage.setItem("connectorId", connectorId);
+                      setIsAuthModalVisible(false);
                     } catch (e) {
                       console.error(e);
                     }
-                  }}>Authenticate</Button>
-        </div>
-      
+                  }}
+                >
+                  <img src={icon} alt={title} style={styles.icon} />
+                  <Text style={{ fontSize: "14px" }}>{title}</Text>
+                </div>
+              ))}
+            </div> :
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <h5 style={{ color: 'black' }}>
+                Switch Network to {process.env.REACT_APP_CHAIN_NAME}
+              </h5>
+              <Button onClick={() => addNetwork()} type="primary" style={{ marginTop: '1rem' }}>
+                Switch Network
+              </Button>
+            </div>
+          }
+        </Modal>
       </>
     );
-  }else{ return (
-    <div style={styles.account} onClick={() => setIsModalVisible(true)}>
-    <p style={{ marginRight: "5px", ...styles.text }}>{getEllipsisTxt(account, 6)}</p>
-    <Blockie currentWallet scale={3} />
-  </div>)
   }
 
+  return (
+    <>
+      {/* <button
+        onClick={async () => {
+          try {
+            console.log("change")
+            await web3._provider.request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x38" }],
+            });
+            console.log("changed")
+          } catch (e) {
+            console.error(e);
+          }
+        }}
+      >
+        Hi
+      </button> */}
+      <div style={styles.account} onClick={() => setIsModalVisible(true)}>
+        <p style={{ marginRight: "5px", ...styles.text }}>{getEllipsisTxt(account, 6)}</p>
+        <Blockie currentWallet scale={3} />
+      </div>
+      <Modal
+        visible={isModalVisible}
+        footer={null}
+        onCancel={() => setIsModalVisible(false)}
+        bodyStyle={{
+          padding: "15px",
+          fontSize: "17px",
+          fontWeight: "500",
+        }}
+        style={{ fontSize: "16px", fontWeight: "500" }}
+        width="400px"
+      >
+        Account
+        <Card
+          style={{
+            marginTop: "10px",
+            borderRadius: "1rem",
+          }}
+          bodyStyle={{ padding: "15px" }}
+        >
+          <Address avatar="left" size={6} copyable style={{ fontSize: "20px" }} />
+          <div style={{ marginTop: "10px", padding: "0 10px" }}>
+            <a href={`${getExplorer(chainId)}/address/${account}`} target="_blank" rel="noreferrer">
+              <SelectOutlined style={{ marginRight: "5px" }} />
+              View on Explorer
+            </a>
+          </div>
+        </Card>
+        <Button
+          size="large"
+          type="primary"
+          style={{
+            width: "100%",
+            marginTop: "10px",
+            borderRadius: "0.5rem",
+            fontSize: "16px",
+            fontWeight: "500",
+          }}
+          onClick={async () => {
+            await logout();
+            window.localStorage.removeItem("connectorId");
+            setIsModalVisible(false);
+          }}
+        >
+          Disconnect Wallet
+        </Button>
+      </Modal>
+    </>
+  );
 }
 
 export default Account;

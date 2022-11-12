@@ -51,7 +51,7 @@ function NFTTokenIds(props) {
           {collections &&
             collections.map((collection, index) => {
               return (
-                <Link key={index} to={`/nftMarket/${collection.id}`}>
+                <Link key={index} to={`/market/${collection.id}`}>
                   <Card
                     hoverable
                     actions={[

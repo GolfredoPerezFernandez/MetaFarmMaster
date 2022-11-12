@@ -201,9 +201,12 @@ console.log(id)
     }
 
     useEffect(() => {
+      if(account){
+
         getNFT();
         getTransactions()
-    }, []);
+      }
+    }, [account]);
 
 
     return (
@@ -290,14 +293,14 @@ console.log(id)
                                         </List.Item>
                                 }
                             />
-                        }{NFT?.price!==0 &&NFT?.owner.toString().toLowerCase()!==account.toLowerCase().toLowerCase()?<Button
+                        }{NFT?.price!==0 &&NFT?.owner?.toString().toLowerCase()!==account?.toLowerCase().toLowerCase()?<Button
                             onClick={buyNFT}
                             disabled={NFT?.isSold}
                             style={{ marginTop: '1rem' }}
                             type="primary"
                         >
                         {'Buy Now'}
-                        </Button> :NFT?.owner.toString().toLowerCase()===account.toLowerCase().toLowerCase()? <Button
+                        </Button> :NFT?.owner.toString().toLowerCase()===account?.toLowerCase().toLowerCase()? <Button
                         onClick={buyNFT}
                         disabled={NFT?.isSold}
                         style={{ marginTop: '1rem' }}

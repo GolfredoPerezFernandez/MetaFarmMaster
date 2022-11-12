@@ -190,7 +190,7 @@ const App = ({ isServerInfo }) => {
             <Route path="/transactions">
               <NFTMarketTransactions />
             </Route>
-            <Route path="/nftMarket/:collectionId">
+            <Route path="/market/:collectionId">
               <ViewCollection chainName={getChain(chainId)} />
             </Route>
             <Route path="/nft/:id">
