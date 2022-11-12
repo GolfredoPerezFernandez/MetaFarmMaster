@@ -199,6 +199,31 @@ console.log(id)
 
 
     }
+    const removeNFT = async (nft) => {
+        
+      
+        const OPTIONS = {
+            contractAddress:process.env.REACT_APP_CONTRACT_ADDRESS,
+            functionName: 'cancelMarketItem',
+            abi: getContractABI(),
+            params: {
+                nftContractAddress:process.env.REACT_APP_CONTRACT_ADDRESS,
+              marketItemId:id,
+            },
+          };
+  
+          await contractProcessor.fetch({
+            params: OPTIONS,
+            onSuccess: () => {
+              alert('NFT removed!');
+            },
+            onError: (error) => {
+              if (error.data?.message !== undefined) {
+                alert(error.data?.message);
+              }
+            },
+          });
+    }
 
     useEffect(() => {
       if(account){
@@ -301,7 +326,7 @@ console.log(id)
                         >
                         {'Buy Now'}
                         </Button> :NFT?.owner.toString().toLowerCase()===account?.toLowerCase().toLowerCase()? <Button
-                        onClick={buyNFT}
+                        onClick={removeNFT}
                         disabled={NFT?.isSold}
                         style={{ marginTop: '1rem' }}
                         type="primary"
