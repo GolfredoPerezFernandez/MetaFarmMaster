@@ -55,7 +55,8 @@ export default function ViewNFT() {
                   };
                   const transaction = await Moralis.Web3API.native.getTransaction(options);
 console.log(parseInt(transaction.logs[0].data.toString()))
-if(parseInt(transaction.logs[0].data.toString())!==2.315841784746324e+77){
+
+if(parseFloat(transaction.logs[0].data.toString())>=parseFloat(2.315841784746324e+77)){
   result=[...result,{
     from_address:transfersNFT.result[0].from_address,                    
     to_address:transfersNFT.result[0].to_address,                  
@@ -318,14 +319,15 @@ console.log(id)
                                         </List.Item>
                                 }
                             />
-                        }{NFT?.price!==0 &&NFT?.owner?.toString().toLowerCase()!==account?.toLowerCase().toLowerCase()?<Button
+                        }
+                        {NFT?.price!==0 &&NFT?.owner?.toString().toLowerCase()!==account?.toLowerCase().toLowerCase()?<Button
                             onClick={buyNFT}
                             disabled={NFT?.isSold}
                             style={{ marginTop: '1rem' }}
                             type="primary"
                         >
                         {'Buy Now'}
-                        </Button> :NFT?.owner.toString().toLowerCase()===account?.toLowerCase().toLowerCase()? <Button
+                        </Button> :NFT?.price!==0 && NFT?.owner.toString().toLowerCase()===account?.toLowerCase().toLowerCase()? <Button
                         onClick={removeNFT}
                         disabled={NFT?.isSold}
                         style={{ marginTop: '1rem' }}
