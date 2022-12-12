@@ -1,5 +1,12 @@
 const webpack = require("webpack");
 module.exports = function override(config, env) {
+ 
+  config.module.rules=[
+    {
+      test: /\.html$/i,
+      loader: 'html-loader',
+    },
+  ]
   config.resolve.fallback = {
     url: require.resolve("url"),
     fs: require.resolve("fs"),
@@ -18,7 +25,7 @@ module.exports = function override(config, env) {
     })
   );
 
-  return {
+  return { 
     ...config,
     stats: { warnings: false },
   };

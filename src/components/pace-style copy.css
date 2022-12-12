@@ -1,0 +1,67 @@
+.preloader {
+    width: 100vw;
+    max-height: 100vh;
+    position: relative;
+    z-index: 8;
+}
+.pace{
+    pointer-events:none;
+    user-select:none;
+    z-index:9;
+    position:absolute;
+    margin:auto;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    width:400px;
+    border:0px;
+    height:1px;
+    overflow:hidden;
+    background: #1b1b1b;
+}
+.pace .pace-progress{
+    box-sizing:border-box;
+    transform:translate3d(0,0,0);
+    max-width:400px;
+    position:absolute;
+    z-index:9;
+    display:block;
+    top:0;
+    right:100%;
+    height:100%;
+    width:100%;
+    background: gray;
+    animation: pace-progress-animation 16s !important;
+}
+
+@keyframes pace-progress-animation {
+    0% {
+        max-width: 0;
+    }
+    100% {
+        max-width: 400px;
+        display: none !important;
+    }
+}
+
+.pace .pace-inactive{
+    display:none;
+}
+
+#preloader{
+    width:100%;
+    height:100vh;
+    background:#101010;
+    overflow:hidden;
+    position:fixed;
+    transition-timing-function:cubic-bezier(0.19,1,0.22,1);
+}
+.p{
+    position:absolute;
+    top:40%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    color:#fff;
+    font-family: arial;
+}

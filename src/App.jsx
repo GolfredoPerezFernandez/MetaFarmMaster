@@ -14,6 +14,7 @@ import ERC20Transfers from "components/ERC20Transfers";
 import DEX from "components/DEX";
 import NFTBalance from "components/NFTBalance";
 import Wallet from "components/Wallet";
+
 import { Layout, Tabs } from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "components/NativeBalance";
@@ -133,7 +134,7 @@ const App = ({ isServerInfo }) => {
   }, [isAuthenticated, isWeb3Enabled]);
 
   return (
-    <Layout style={{ height: "100vh", overflow: "auto", backgroundColor: '#141414' }}>
+    <Layout style={{ height: "100vh", overflow: "auto",backgroundColor: '#141414'}}>
       <Router>
         <Header style={styles.header}>
           <Logo />
@@ -190,14 +191,15 @@ const App = ({ isServerInfo }) => {
             <Route path="/transactions">
               <NFTMarketTransactions />
             </Route>
-            <Route path="/market/:collectionId">
-              <ViewCollection chainName={getChain(chainId)} />
-            </Route>
+            
             <Route path="/nft/:id">
               <ViewNFT />
             </Route>
+            <Route path="/market/:collectionId">
+              <ViewCollection chainName={getChain(chainId)} />
+            </Route>
             {/*Hidden route with no direct link only for admin*/}
-{           <Route path="/admin-collection-manager">
+              {<Route path="/admin-collection-manager">
               <AdminCollectionManager />
             </Route> }
             {/* <Route path="/contract">

@@ -14,8 +14,7 @@ function MenuItems() {
     setSelectedKeys([pathname])
   },[pathname])
 
-  return (
-    <Menu
+  return ( <Menu
       theme="dark"
       mode="horizontal"
       style={{
@@ -38,9 +37,10 @@ function MenuItems() {
       </Menu.Item>
 
       <Menu.Item key="/lands">
-        <Button onClick={() => window.open("https://mfarmgame.com/lands/")} type="primary">
+        <Button onClick={() => window.open("http://localhost:3000/lands.html")} >
           Lands
-        </Button>
+        </Button>       
+
       </Menu.Item>
 
       <Menu.Item key="/presale">

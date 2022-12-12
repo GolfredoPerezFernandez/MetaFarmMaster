@@ -7,6 +7,7 @@ import {
     ShoppingCartOutlined,
     CloseCircleOutlined
 } from "@ant-design/icons";
+
 import { getExplorer } from "helpers/networks";
 import getCollections from "../MockAPI/getCollections";
 import { useParams } from "react-router-dom";
@@ -128,8 +129,6 @@ function ViewCollection(props) {
         let promises = [];
        
             let marketItem=await getMarketItem(nft)  
-            console.log(nft.token_id)
-            console.log(parseFloat(marketItem[5]))
            
            
           let  metadata2 = {
@@ -140,8 +139,8 @@ function ViewCollection(props) {
             owner:marketItem[3],
             image:`https://mfarmgame.com/NFTs/${nft.token_id}.png`,
         }
-  console.log(metadata2)
-  promises.push({ ...nft,...metadata2 } )
+          console.log(metadata2)
+          promises.push({ ...nft,...metadata2 } )
           return Promise.all(promises);
     }
 

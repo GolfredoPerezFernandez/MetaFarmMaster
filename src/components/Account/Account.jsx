@@ -2,6 +2,8 @@ import { useMoralis } from "react-moralis";
 import { getEllipsisTxt } from "helpers/formatters";
 import Blockie from "../Blockie";
 import { Button, Card, Modal } from "antd";
+import Moralis from 'moralis-v1';
+
 import { useState } from "react";
 import Address from "../Address/Address";
 import { SelectOutlined } from "@ant-design/icons";
@@ -46,7 +48,7 @@ const styles = {
 };
 
 function Account() {
-  const { authenticate, isAuthenticated, account, chainId, logout } = useMoralis();
+  const { authenticate, enableWeb3,isAuthenticated, account, chainId, logout } = useMoralis();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAuthModalVisible, setIsAuthModalVisible] = useState(false);
 
@@ -112,7 +114,24 @@ function Account() {
                   onClick={async () => {
                     try {
                       console.log('initiate login');
-                      await authenticate({ provider: connectorId });
+                      await enableWeb3({ throwOnError: true, provider: 'metamask' });
+                      let user=await Moralis.User.current()
+                      console.log('user '+user)
+
+                      const { message } = await Moralis.Cloud.run('requestMessage', {
+                        address: "0xFE7ef3E7F8A45E4F4F8331C9Bc1c1896655596a1",
+                        chain: '0x61',
+                        networkType: 'evm',
+                      })
+                      console.log('initiate login');
+                      await authenticate({ 
+                        throwOnError: true,
+                        signingMessage: message }).then((res)=>{
+
+                          console.log("account "+JSON.stringify(res))
+                          
+                          console.log("account "+JSON.stringify(account))
+                        });
                       window.localStorage.setItem("connectorId", connectorId);
                       setIsAuthModalVisible(false);
                     } catch (e) {
