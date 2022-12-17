@@ -1,18 +1,16 @@
 
 //START: CONNECTING TO MORALIS
-const CONTRACT_ADDRESS = "0x1Db5C74a843920fc30c4838473Cb44E730066173";
+const CONTRACT_ADDRESS = "0xe431308cE602Ff13d23e82e92a1fbE0DC2826Ab5";
 const FRONTEND_BASE_URL = "http://localhost:3000/";
 
 
 const serverUrl = "https://metafarmlands.herokuapp.com/server";
 const appId = '001';
-
 Moralis.start({
 	serverUrl,
 	appId,
   });
   
-   Moralis.enableWeb3();
    
 //END: CONNECTING TO MORALIS
 //START: LOAD METADATA 
@@ -29,6 +27,17 @@ function getAllMetaData() {
       ALL_METADATA = JSON.parse(this.response);
     }
   });
+}
+async function init(){
+
+await Moralis.enableWeb3();
+
+console.log('initializing')
+
+const { message } = await Moralis.Cloud.run('getAllTokenIds')
+  console.log('initiate login '+message);
+
+
 }
 
 getAllMetaData();
@@ -903,7 +912,7 @@ const CONTRACT_ABI = [
 const getMarketItem = async (nft) => {
 	
 const sendOptions2 = {
-	contractAddress: "0xe990eAA4D078f3F3018F692A5880423cF9536f92",
+	contractAddress: "0xe431308cE602Ff13d23e82e92a1fbE0DC2826Ab5",
 	functionName: "fetchItem",
   //	  msgValue: Moralis.Units.ETH("0"),
 	abi: CONTRACT_ABI,
@@ -921,24 +930,27 @@ result=res
 }
 
 async function getAllTokenIds() {
-  let NFTs = []; 
   let cursor = null;  
-  const OPTIONS = { address: "0x1Db5C74a843920fc30c4838473Cb44E730066173" }
+  const OPTIONS = { address: CONTRACT_ADDRESS, chain: '0x61' }
 
+  let NFTs = [];
   do {
-	  let response = await Moralis.Web3API.token.getAllTokenIds({...OPTIONS, cursor});
-    
-  	  NFTs.push(response.result);
-  	  cursor = response.cursor
- 	 } while (cursor !== "" && cursor != null);
+	console.log('response ')
+    let response = await Moralis.Web3API.token.getAllTokenIds(OPTIONS);
+  console.log('response '+response)
+	
+	NFTs.push(response.result);
+    cursor = response.cursor
+  } while(cursor !== "" && cursor != null);
 
- 	  return { result: NFTs.flat() }
-	}
+  return { result: NFTs.flat() }
+}
 
 
 // Get all NFTs
 async function loadInventory() {
 	console.log( ' NFTs');
+	
 	let NFTs = await getAllTokenIds();
 	console.log(NFTs, 'pure NFTs');
   

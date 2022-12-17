@@ -1,6 +1,6 @@
 
 //START: CONNECTING TO MORALIS
-const CONTRACT_ADDRESS = "0x1Db5C74a843920fc30c4838473Cb44E730066173";
+const CONTRACT_ADDRESS = "0xe431308cE602Ff13d23e82e92a1fbE0DC2826Ab5";
 const FRONTEND_BASE_URL = "http://localhost:3000/";
 const serverUrl = "https://metafarmlands.herokuapp.com/server";
 const appId = 001;
@@ -938,7 +938,7 @@ result=res2
 async function getAllTokenIds() {
   let cursor = null;
   let NFTs = [];
-  const OPTIONS = { address: "0x1Db5C74a843920fc30c4838473Cb44E730066173", chain: "0x61" }
+  const OPTIONS = { address: "0xe431308cE602Ff13d23e82e92a1fbE0DC2826Ab5", chain: "0x61" }
   do {
     let response = await Moralis.Web3API.token.getAllTokenIds({ ...OPTIONS, cursor });
     
